@@ -1,0 +1,12 @@
+{
+  "name": "liste",
+  "displayName": "liste",
+  "expo": {
+    "name": "liste",
+    "slug": "liste",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
