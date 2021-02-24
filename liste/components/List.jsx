@@ -1,17 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  Platform,
+} from "react-native";
+import { SvgCssUri } from "react-native-svg";
 
 const List = () => {
   const [countries, setCountries] = useState([]);
 
+  // const [width, setWidth] = useState < number > window.innerWidth;
+  // function handleWindowSizeChange() {
+  //   setWidth(window.innerWidth);
+  // }
+  // useEffect(() => {
+  //   window.addEventListener("resize", handleWindowSizeChange);
+  //   return () => {
+  //     window.removeEventListener("resize", handleWindowSizeChange);
+  //   };
+  // }, []);
+
+  // const isMobile: Platform.OS === 'android'
+
   const renderItem = ({ item }) => {
     return (
       <View style={styles.container}>
-        <Text>{item.name}</Text>
-        <hr style={{ backgroundColor: "black", width: 70, height: 2 }} />
-        <Text>{item.capital}</Text>
-        <hr style={{ backgroundColor: "black", width: 70, height: 2 }} />
-        <Image style={styles.drapeau} source={{ uri: item.flag }}></Image>
+        <Text>Nom : {item.name}</Text>
+        <Text>Capital : {item.capital}</Text>
+        <Text>
+          {Platform.OS === "android" ? (
+            <SvgCssUri
+              style={[{ width: 200, height: 100, resizeMode: "contain" }]}
+              uri={`${item.flag}`}
+            ></SvgCssUri>
+          ) : (
+            <Image style={styles.drapeau} source={{ uri: item.flag }}></Image>
+          )}
+        </Text>
+        {/* <Image style={styles.drapeau} source={{uri:item.flag}}></Image>
+        <SvgUri width="100" height="100" uri={`${item.flag}`}></SvgUri> */}
       </View>
     );
   };
@@ -22,10 +52,9 @@ const List = () => {
         return response.json();
       })
       .then((response) => {
-        console.log(response);
         setCountries(response);
       });
-  });
+  }, []);
 
   if (countries.length === 0) {
     return <Text>En cours de chargement</Text>;
@@ -48,14 +77,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginVertical: 20,
     paddingVertical: 10,
-    border: "2px solid black",
+    borderColor: "black",
+    borderWidth: 2,
     borderRadius: 20,
     width: 300,
   },
   drapeau: {
-      width: 200,
-      height: 100,
-  }
+    width: 200,
+    height: 100,
+    resizeMode: "contain",
+  },
 });
 
 export default List;
